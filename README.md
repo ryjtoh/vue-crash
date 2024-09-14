@@ -1,6 +1,9 @@
 # vue-crash-2024
 
-This template should help get you started developing with Vue 3 in Vite.
+![image](https://github.com/user-attachments/assets/b87e5797-3d88-44cd-a390-e1a54e083ed8)
+
+Vue.js practice project. A website for developers to view, modify, add, and delete job postings for Vue.js devs.
+
 
 ## Recommended IDE Setup
 
