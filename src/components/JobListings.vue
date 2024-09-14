@@ -1,14 +1,30 @@
 <script setup>
-import jobData from '@/jobs.json'
 import JobListing from './JobListing.vue';
-import { ref, defineProps } from 'vue'
+import { ref, defineProps, onMounted, reactive} from 'vue'
+import { RouterLink } from 'vue-router';
+import axios from 'axios';
 
-const jobs = ref(jobData)
 defineProps({
     limit: Number,
     showButton: {
         type: Boolean,
         default: false,
+    }
+})
+
+const state = reactive({
+    jobs: [],
+    isLoading: true
+})
+
+onMounted(async () => {
+    try {
+        const response = await axios.get('http://localhost:5000/jobs')
+        state.jobs = response.data
+    } catch (err) {
+        console.error('Error fetching jobs')
+    } finally {
+        state.isLoading = false;
     }
 })
 </script>
@@ -20,16 +36,16 @@ defineProps({
                 Browse Jobs
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <JobListing v-for="job in jobs.slice(0, limit || jobs.length)" :key="job.id" :job="job"/>
+                <JobListing v-for="job in state.jobs.slice(0, limit || state.jobs.length)" :key="job.id" :job="job"/>
             </div>
         </div>
     </section>
 
     <section v-if="showButton" class="m-auto max-w-lg my-10 px-6">
-      <a
-        href="/jobs"
+      <RouterLink
+        to="/jobs"
         class="block bg-black text-white text-center py-4 px-6 rounded-xl hover:bg-gray-700"
-        >View All Jobs</a
+        >View All Jobs</RouterLink
       >
     </section>
     
